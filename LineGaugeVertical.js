@@ -71,10 +71,12 @@ export default class LineGauge extends Component {
   _handleScroll(event) {
     if (this._scrollQueue) return;
 
-    let offset = event.nativeEvent.contentOffset.x;
+    let offset = event.nativeEvent.contentOffset.y;
     let { min, max } = this.props;
 
     let val = this._scaleScroll(offset);
+
+    console.log(val);
 
     if (val !== this._value) {
       this._value = val;
@@ -106,13 +108,12 @@ export default class LineGauge extends Component {
 
       return (
         <View key={`val-${i}`} style={styles.intervalContainer}>
-          {intervalSize === 'large' && (
-            <Text style={[styles.intervalValue, this.props.styles.intervalValue]}>{val}</Text>
-          )}
-
           <View
             style={[styles.interval, styles[intervalSize], this.props.styles.interval, this.props.styles[intervalSize]]}
           />
+          {intervalSize === 'large' && (
+            <Text style={[styles.intervalValue, this.props.styles.intervalValue]}>{val}</Text>
+          )}
         </View>
       );
     });
@@ -124,11 +125,11 @@ export default class LineGauge extends Component {
         <ScrollView
           ref={(r) => (this._scrollView = r)}
           automaticallyAdjustInsets={false}
-          horizontal
+          horizontal={false}
           decelerationRate={0}
           snapToInterval={INTERVAL_WIDTH}
           snapToAlignment="start"
-          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
           onScroll={this._handleScroll}
           onMomentumScrollEnd={this._handleScrollEnd}
           onContentSizeChange={this._handleContentSizeChange}
@@ -165,8 +166,9 @@ LineGauge.defaultProps = {
 
 var styles = StyleSheet.create({
   container: {
-    height: 55,
-    width: GAUGE_WIDTH,
+    position: 'relative',
+    height: GAUGE_WIDTH,
+    width: 55,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderTopColor: '#DDDDDD',
@@ -175,44 +177,47 @@ var styles = StyleSheet.create({
     marginVertical: 8,
   },
   intervals: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    paddingHorizontal: GAUGE_WIDTH / 2,
-    marginHorizontal: -INTERVAL_WIDTH / 2,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    paddingVertical: GAUGE_WIDTH / 2 - 8,
   },
   intervalContainer: {
-    width: INTERVAL_WIDTH,
+    height: INTERVAL_WIDTH,
     alignItems: 'center',
+    flexDirection: 'row',
   },
   interval: {
     width: 1,
-    marginRight: -1,
+    height: INTERVAL_WIDTH,
+    marginRight: 1,
     backgroundColor: '#979797',
   },
   intervalValue: {
     fontSize: 8,
     marginBottom: 3,
+    marginLeft: 5,
     fontWeight: 'bold',
   },
   small: {
-    height: 13,
+    width: 12,
+    height: 2,
   },
   medium: {
-    height: 20,
+    width: 20,
+    height: 2,
   },
   large: {
     backgroundColor: '#4A4A4A',
-    width: 2,
-    height: 26,
+    width: 26,
+    height: 2,
   },
   centerline: {
-    height: 54,
-    width: 1,
+    height: 1,
+    width: 54,
     backgroundColor: 'red',
     position: 'absolute',
-    left: GAUGE_WIDTH / 2,
+    top: GAUGE_WIDTH / 2,
     opacity: 0.6,
-    top: 0,
     zIndex: -1,
   },
 });

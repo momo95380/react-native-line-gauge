@@ -1,2 +1,3 @@
 import LineGauge from './LineGauge'
-export default LineGauge
+import LineGaugeVertical from './LineGauge'
+export {LineGauge, LineGaugeVertical}
