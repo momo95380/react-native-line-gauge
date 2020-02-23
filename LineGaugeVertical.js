@@ -134,7 +134,7 @@ export default class LineGauge extends Component {
           onMomentumScrollEnd={this._handleScrollEnd}
           onContentSizeChange={this._handleContentSizeChange}
           scrollEventThrottle={100}
-          contentOffset={{ x: this.state.contentOffset }}
+          contentOffset={{ y: this.state.contentOffset }}
         >
           <View style={[styles.intervals, this.props.styles.intervals]}>{this._renderIntervals()}</View>
         </ScrollView>
