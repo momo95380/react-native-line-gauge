@@ -76,8 +76,6 @@ export default class LineGauge extends Component {
 
     let val = this._scaleScroll(offset);
 
-    console.log(val);
-
     if (val !== this._value) {
       this._value = val;
       this.props.onChange(val);
