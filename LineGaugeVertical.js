@@ -174,7 +174,6 @@ var styles = StyleSheet.create({
     borderTopColor: '#DDDDDD',
     borderBottomColor: '#DDDDDD',
     backgroundColor: '#F9F9F9',
-    marginVertical: 8,
   },
   intervals: {
     flexDirection: 'column',
