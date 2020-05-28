@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ReactNative from 'react-native';
 import times from 'lodash.times';
 
-var { StyleSheet, ScrollView, Dimensions, Text, View } = ReactNative;
+var { StyleSheet, ScrollView, Dimensions, Text, View, Animated } = ReactNative;
 
 const GAUGE_WIDTH = Math.floor(Dimensions.get('window').width);
 const INTERVAL_WIDTH = 18;
@@ -120,7 +120,7 @@ export default class LineGauge extends Component {
   render() {
     return (
       <View style={[styles.container, this.props.styles.container]}>
-        <ScrollView
+        <Animated.ScrollView
           ref={(r) => (this._scrollView = r)}
           automaticallyAdjustInsets={false}
           horizontal={false}
@@ -128,14 +128,22 @@ export default class LineGauge extends Component {
           snapToInterval={INTERVAL_WIDTH}
           snapToAlignment="start"
           showsVerticalScrollIndicator={false}
-          onScroll={this._handleScroll}
           onMomentumScrollEnd={this._handleScrollEnd}
           onContentSizeChange={this._handleContentSizeChange}
-          scrollEventThrottle={100}
+          scrollEventThrottle={1}
           contentOffset={{ y: this.state.contentOffset }}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: this.props.scrollYOffset } } }],
+              {
+                useNativeDriver: true,
+                listener: event => {
+                  this._handleScroll(event)
+                },
+              },
+            )}
         >
           <View style={[styles.intervals, this.props.styles.intervals]}>{this._renderIntervals()}</View>
-        </ScrollView>
+        </Animated.ScrollView>
 
         <View style={[styles.centerline, this.props.styles.centerline]} />
       </View>
